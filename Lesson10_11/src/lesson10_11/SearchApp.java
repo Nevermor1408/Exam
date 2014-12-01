@@ -5,6 +5,7 @@
  */
 
 package lesson10_11;
+import java.io.*;
 
 /**
  *
@@ -15,8 +16,42 @@ public class SearchApp extends javax.swing.JFrame {
     /**
      * Creates new form SearchApp
      */
+    ISSStudent s[]=new ISSStudent [100];
+     public static int search (Object[] a, Object searchValue){
+	   int left = 0;
+	   int right = a.length-1;
+	   while (left <= right){
+	      int midpoint = (left + right) / 2;
+	      int result = ((Comparable)a[midpoint]).compareTo(searchValue); 
+	      if (result == 0)
+	         return midpoint;
+	      else if (result < 0)
+	         left = midpoint + 1;
+	      else
+	         right = midpoint-1;
+	   }
+	   return -1;	
+		   
+}
     public SearchApp() {
+        //nice coat
+        
         initComponents();
+        try{
+        String nm, ad;
+        int id=0;
+        FileReader fr = new FileReader("Students.txt");//SHIFF THOMAS, PARANOID SCHIZOPHRENIC
+        BufferedReader br = new BufferedReader(fr);
+        for(int x=0;x<100;x++){
+            nm=br.readLine();
+            ad=br.readLine();
+            id=Integer.parseInt(br.readLine());
+            s[x]=new ISSStudent(nm,ad,id);
+            System.out.println(s[x]);
+        }
+        }catch(Exception e){}
+        
+        
     }
 
     /**
@@ -30,39 +65,58 @@ public class SearchApp extends javax.swing.JFrame {
 
         btnsearch = new javax.swing.JButton();
         btnclear = new javax.swing.JButton();
-        lblresult = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtnm = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtresult = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnsearch.setText("Search");
+        btnsearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsearchActionPerformed(evt);
+            }
+        });
 
         btnclear.setText("Clear");
+        btnclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclearActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Enter Student ID to Search");
+
+        txtnm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnmActionPerformed(evt);
+            }
+        });
+
+        txtresult.setColumns(20);
+        txtresult.setRows(5);
+        jScrollPane2.setViewportView(txtresult);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69)
+                .addComponent(txtnm, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 131, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(lblresult, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnsearch)
                         .addGap(18, 18, 18)
                         .addComponent(btnclear)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
-                .addComponent(txtnm, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -75,12 +129,34 @@ public class SearchApp extends javax.swing.JFrame {
                     .addComponent(btnsearch)
                     .addComponent(btnclear))
                 .addGap(18, 18, 18)
-                .addComponent(lblresult, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsearchActionPerformed
+        ISSStudent temp;
+        int id = Integer.parseInt(txtnm.getText());
+        temp = new ISSStudent("","",id);
+        int location=search(s,temp);
+        if(location==-1)
+            txtresult.setText("Student not found");
+        else
+            txtresult.setText(s [location].toString());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnsearchActionPerformed
+
+    private void txtnmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnmActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtnmActionPerformed
+
+    private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
+        txtresult.setText("");
+        txtnm.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnclearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,7 +197,8 @@ public class SearchApp extends javax.swing.JFrame {
     private javax.swing.JButton btnclear;
     private javax.swing.JButton btnsearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblresult;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtnm;
+    private javax.swing.JTextArea txtresult;
     // End of variables declaration//GEN-END:variables
 }
