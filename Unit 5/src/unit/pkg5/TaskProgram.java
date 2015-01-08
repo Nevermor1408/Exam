@@ -223,6 +223,8 @@ public class TaskProgram extends javax.swing.JFrame {
     }//GEN-LAST:event_btnprevActionPerformed
 
     private void mnuexitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuexitActionPerformed
+        this.dispose();
+        System.exit(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_mnuexitActionPerformed
 
