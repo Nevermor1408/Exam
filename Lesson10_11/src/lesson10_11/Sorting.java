@@ -29,6 +29,7 @@ DefaultListModel model;
         btninsert = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnquit = new javax.swing.JButton();
+        btnrec = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +72,13 @@ DefaultListModel model;
             }
         });
 
+        btnrec.setText("Recursive");
+        btnrec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrecActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,9 +96,11 @@ DefaultListModel model;
                     .addComponent(btnselection)
                     .addComponent(btnbubble)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnquit)
-                        .addComponent(btninsert)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnquit))
+                    .addComponent(btnrec)
+                    .addComponent(btninsert))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -107,11 +117,13 @@ DefaultListModel model;
                         .addContainerGap(58, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnbubble)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnselection)
-                        .addGap(65, 65, 65)
-                        .addComponent(btninsert)
                         .addGap(18, 18, 18)
+                        .addComponent(btnrec)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnselection)
+                        .addGap(18, 18, 18)
+                        .addComponent(btninsert)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnquit)
                         .addGap(31, 31, 31))))
         );
@@ -172,6 +184,20 @@ DefaultListModel model;
         this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnquitActionPerformed
+
+    private void btnrecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecActionPerformed
+        model.clear();
+        
+        double stime=System.currentTimeMillis();
+        recursive(nums,0,nums.length-1);
+        
+        double etime=System.currentTimeMillis()-stime;
+        JOptionPane.showMessageDialog(this, "Time it took:" + etime+ " In miliseconds");
+        for(int x=0;x<nums.length;x++){
+             model.addElement(nums[x]);
+        }
+    // TODO add your handling code here:
+    }//GEN-LAST:event_btnrecActionPerformed
 public static void insertionSort(int a[]){
 	int itemToInsert, j;
 	boolean stillLooking;
@@ -245,6 +271,25 @@ public static int findMinimum(int[] a, int first){
          minIndex = i;
    return minIndex;
 }
+public static void recursive (int a[], int left, int right){
+    if(left>=right)return;
+    int i = left;
+    int j = right;
+    int pivotValue = a[(left + right)/2];
+    while(i<j){
+        while(a[i]<pivotValue)i++;
+        while(pivotValue<a[j])j--;
+        if(i<=j){
+            int temp = a[i];
+            a[i]=a[j];
+            a[j]=temp;
+            i++;
+            j--;
+        }
+    }
+    recursive(a,left,j);
+    recursive(a,i,right);
+}
 
 //supporting swap method (same as bubble sort swap)
 
@@ -264,6 +309,7 @@ public static int findMinimum(int[] a, int first){
     private javax.swing.JButton btngen;
     private javax.swing.JButton btninsert;
     private javax.swing.JButton btnquit;
+    private javax.swing.JButton btnrec;
     private javax.swing.JButton btnselection;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
