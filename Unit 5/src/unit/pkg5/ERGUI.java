@@ -194,8 +194,10 @@ public class ERGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnscheduleActionPerformed
 
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
+        
         p=(Patient)q.dequeue();
         txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
+        
         q.remove();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnnextActionPerformed
@@ -207,18 +209,11 @@ public class ERGUI extends javax.swing.JFrame {
 
     private void btnallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnallActionPerformed
         for(int x = 0; x < q.size(); x++){
-					if (p.priority() == "critical"){
-						q.dequeue();
-					}
-					if (p.priority() == "serious"){
-						q.dequeue();
-					}
-					if (p.priority() == "fair"){
-						q.dequeue();
-					}
-				}
+					
+				
         p=(Patient)q.dequeue();
         txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnallActionPerformed
 
