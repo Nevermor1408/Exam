@@ -3,33 +3,33 @@ package unit.pkg5;
 
 public class Patient {
 	
-	static String name, condition, treat;
-	static boolean treated;
 	
-	public Patient(String nm, String cond, boolean t){
-		name = nm;
-		condition = cond;
-		treated = t;
-	}
-	private String Treated(){
-	if (treated == true) treat = " has been treated ";
-	else if (treated == false) treat = "waiting....";
-	return treat;
-	}
-	
-	public void isTreated(boolean t){
-		treated = t;
-		Treated();
-	}
-	public String priority(){
-		return condition;
-	}
-	
-	public String toString() {
-		String str = name + " \t";
-		str += condition + " \n";
-		return str;
-	}
-	
+
+    String name;
+    String priority;
+
+    public Patient(String name, int priority) {
+        this.name = name;
+        switch (priority) {
+            case 0:
+                this.priority = "Critical";
+                break;
+            case 1:
+                this.priority = "Serious";
+                break;
+            case 2:
+                this.priority = "Fair";
+                break;
+            default:
+                this.priority = "Unknown";
+                break;
+        }
+    }
+
+    @Override
+    public String toString() {
+        String temp = name + " (Condition: " + priority + " )";
+        return temp;
+    }
 
 }
