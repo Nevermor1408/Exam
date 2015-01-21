@@ -5,7 +5,13 @@ package unit.pkg5;
  *
  * @author matt6341
  */
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 //import BreezySwing.*;
 
 
@@ -14,14 +20,18 @@ public class ERGUI extends javax.swing.JFrame {
     /**
      * Creates new form ERGUI
      */
-    Patient p;
+    private final ButtonGroup buttonGroup = new ButtonGroup();
+    static Patient p;
     LinkedPriorityQueue q;
     int priority;
-    int rambo =4;
+    boolean t;
+    int rambo =10;
+    
     public ERGUI() {
         initComponents();
         q=new LinkedPriorityQueue(rambo);
        
+        
         
     }
     
@@ -46,6 +56,7 @@ public class ERGUI extends javax.swing.JFrame {
         txtname = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtpatients = new javax.swing.JTextArea();
+        btnquit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,11 +87,23 @@ public class ERGUI extends javax.swing.JFrame {
         });
 
         btnall.setText("Treat All");
+        btnall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnallActionPerformed(evt);
+            }
+        });
 
         txtpatients.setEditable(false);
         txtpatients.setColumns(20);
         txtpatients.setRows(5);
         jScrollPane1.setViewportView(txtpatients);
+
+        btnquit.setText("Quit");
+        btnquit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnquitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,11 +134,15 @@ public class ERGUI extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnschedule, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 65, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnquit)
+                .addGap(122, 122, 122))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,7 +165,9 @@ public class ERGUI extends javax.swing.JFrame {
                     .addComponent(btnall))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnquit)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -151,13 +180,14 @@ public class ERGUI extends javax.swing.JFrame {
         if(rbfair.isSelected())stat = rbfair.getText();
         if (rbserious.isSelected())stat = rbserious.getText();
         if (rbcritical.isSelected())stat = rbcritical.getText();
-        if(rbfair.isSelected()) priority=1;
-        if(rbserious.isSelected()) priority=2;
-        if(rbcritical.isSelected()) priority=3;
-        p = new Patient(nm,stat);
+        if(rbfair.isSelected()) priority=0;
+        if(rbserious.isSelected()) priority=1;
+        if(rbcritical.isSelected()) priority=2;
+        p = new Patient(nm,stat,t);
         txtpatients.append(p.toString());
         buttonGroup1.clearSelection();
         q.enqueue(p,priority);
+        
         
         
         // TODO add your handling code here:
@@ -166,48 +196,54 @@ public class ERGUI extends javax.swing.JFrame {
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
         p=(Patient)q.dequeue();
         txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
-        
+        q.remove();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnnextActionPerformed
+
+    private void btnquitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnquitActionPerformed
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnquitActionPerformed
+
+    private void btnallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnallActionPerformed
+        for(int x = 0; x < q.size(); x++){
+					if (p.priority() == "critical"){
+						q.dequeue();
+					}
+					if (p.priority() == "serious"){
+						q.dequeue();
+					}
+					if (p.priority() == "fair"){
+						q.dequeue();
+					}
+				}
+        p=(Patient)q.dequeue();
+        txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnallActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ERGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ERGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ERGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ERGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ERGUI frame = new ERGUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ERGUI().setVisible(true);
-            }
-        });
+      
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnall;
     private javax.swing.JButton btnnext;
+    private javax.swing.JButton btnquit;
     private javax.swing.JButton btnschedule;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;

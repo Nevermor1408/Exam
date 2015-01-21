@@ -2,13 +2,34 @@
 package unit.pkg5;
 
 public class Patient {
-	private String name,status;
 	
-	public Patient(String nm, String stat){
-		name=nm;
-		status = stat;
+	static String name, condition, treat;
+	static boolean treated;
+	
+	public Patient(String nm, String cond, boolean t){
+		name = nm;
+		condition = cond;
+		treated = t;
 	}
-	public String toString(){
-		return "Name: " + name + "\tStatus: " + status +"\n";
+	private String Treated(){
+	if (treated == true) treat = " has been treated ";
+	else if (treated == false) treat = "waiting....";
+	return treat;
 	}
+	
+	public void isTreated(boolean t){
+		treated = t;
+		Treated();
+	}
+	public String priority(){
+		return condition;
+	}
+	
+	public String toString() {
+		String str = name + " \t";
+		str += condition + " \t";
+		return str;
+	}
+	
+
 }

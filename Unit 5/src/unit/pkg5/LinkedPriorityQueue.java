@@ -44,6 +44,9 @@ public class LinkedPriorityQueue implements PriorityQueue{
 		}
 		return false;
 	}
+        public void remove(){
+            
+        }
 
     @Override
     public Object peekFront() {
