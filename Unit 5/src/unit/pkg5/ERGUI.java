@@ -218,7 +218,7 @@ public class ERGUI extends javax.swing.JFrame {
     private void btnallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnallActionPerformed
         try {
 	    while(true) {
-                txtpatients.append("\n" + queue.dequeue().toString() + " has been treated...");
+                txtpatients.append("\n--------------------------------------------------------------------------------\n" + queue.dequeue().toString() + " has been treated...");
             }
 	} catch (Exception e) {
             // Kind of hacky, but it works.
