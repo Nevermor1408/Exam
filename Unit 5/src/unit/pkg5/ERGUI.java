@@ -196,6 +196,7 @@ public class ERGUI extends javax.swing.JFrame {
     private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
         
         p=(Patient)q.dequeue();
+        p.isTreated(true);
         txtpatients.append("---------------------\n"+p.toString()+"\nhas been treated\n");
         
         q.remove();
